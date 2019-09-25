@@ -11,7 +11,10 @@ const theme = css`
 const Thing = () => {
 	const ref = useRef();
 
-	useFrame(() => {
+	useFrame(({ clock }) => {
+		ref.current.position.x += Math.cos(clock.getElapsedTime()) * 3;
+		ref.current.position.y += Math.sin(clock.getElapsedTime()) * 3;
+		ref.current.position.z += Math.cos(clock.getElapsedTime()) * 3;
 		ref.current.rotation.y += 0.01;
 	});
 
@@ -26,10 +29,10 @@ const Thing = () => {
 export const Work = () => (
 	<div css={theme}>
 		<Canvas camera={{ position: [0, 0, 1000] }}>
-			<directionalLight
+			<pointLight
 				color='#FFFFFF'
 				intensity={1}
-				position={[1, 1, 1]}
+				position={[0, 2000, 1000]}
 			/>
 			<Thing />
 		</Canvas>

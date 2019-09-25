@@ -1,40 +1,34 @@
 /** @jsx jsx */
-import { useRef } from 'react';
+import * as THREE from 'three';
+import * as CANNON from 'cannon';
+import React, { useEffect, useState } from 'react';
 import { Canvas, useFrame } from 'react-three-fiber';
 import { css, jsx } from '@emotion/core';
+import { useCannon, Provider } from './useCannon';
 
 const theme = css`
 	width: 100vw;
 	height: 100vh;
+	background-color: #272727;
 `;
 
-const Thing = () => {
-	const ref = useRef();
-
-	useFrame(({ clock }) => {
-		ref.current.position.x += Math.cos(clock.getElapsedTime()) * 3;
-		ref.current.position.y += Math.sin(clock.getElapsedTime()) * 3;
-		ref.current.position.z += Math.cos(clock.getElapsedTime()) * 3;
-		ref.current.rotation.y += 0.01;
-	});
-
+export const Work = () => {
 	return (
-		<mesh ref={ref}>
-			<sphereGeometry attach='geometry' args={[300, 30, 30]} />
-			<meshStandardMaterial attach='material' color='#FF0000' />
-		</mesh>
+		<div css={theme}>
+			<Canvas camera={{ position: [0, 5, 15] }}>
+				<ambientLight intensity={0.5} />
+				<spotLight
+					intensity={0.6}
+					position={[30, 30, 50]}
+					angle={0.2}
+					penumbra={1}
+					castShadow
+				/>
+				<mesh castShadow receiveShadow>
+					<boxGeometry attach='geometry' args={[2, 2, 2]} />
+					<meshStandardMaterial attach='material' />
+				</mesh>
+			</Canvas>
+		</div>
 	);
 };
-
-export const Work = () => (
-	<div css={theme}>
-		<Canvas camera={{ position: [0, 0, 1000] }}>
-			<pointLight
-				color='#FFFFFF'
-				intensity={1}
-				position={[0, 2000, 1000]}
-			/>
-			<Thing />
-		</Canvas>
-	</div>
-);
